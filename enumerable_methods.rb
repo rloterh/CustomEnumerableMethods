@@ -1,6 +1,7 @@
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
+
     array = to_a.dup
     i = 0
     while i < array.length
@@ -12,6 +13,7 @@ module Enumerable
 
   def my_each_with_index
     return to_enum(:my_each) unless block_given?
+
     array = to_a.dup
     indexer = 0
     i = 0
@@ -22,9 +24,10 @@ module Enumerable
     end
     self
   end
-  
+
   def my_select
     return to_enum(:my_select) unless block_given?
+
     array = []
     my_each { |i| array << i if yield(i) }
     array
@@ -73,11 +76,10 @@ module Enumerable
 
     new_array = []
     my_each do |value|
-      new_array << if is_a? Hash
-                    yield(value[0], value[1])
-                  else
-                    yield(value)
-                  end
+      new_array << if is_a? Hash yield(value[0], value[1])
+                   else
+                     yield(value)
+                   end
     end
     new_array
   end
@@ -94,17 +96,21 @@ module Enumerable
   end
 
   private
+
   def check_pattern(index, param)
     return index.is_a?(param) if param.is_a? Class
+
     return param.match?(index) if param.is_a? Regexp
+
     index == param
   end
 
-  def get_inject_and_var(param_1, param_2, array, block)
-    param_1 = array.shift if param_1.nil? && block
-    return [param_1, nil, array] if block
-    return [array.shift, param_1, array] if param_2.nil?
-    [param_1, param_2, array]
+  def get_inject_and_var(param1, param2, array, block)
+    param1 = array.shift if param1.nil? && block
+    return [param1, nil, array] if block
+    return [array.shift, param1, array] if param2.nil?
+
+    [param1, param2, array]
   end
 
   def inject_var(array, var, inject)
