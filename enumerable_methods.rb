@@ -41,4 +41,15 @@ module Enumerable
     true
   end
 
+  def my_any?(param = nil, &block)
+    if block
+      my_each { |i| return true if block.yield(i) }
+    elsif param.nil?
+      my_each { |i| return true if i }
+    else
+      my_each { |i| return true if check_pattern(i, param) }
+    end
+    false
+  end
+
   
