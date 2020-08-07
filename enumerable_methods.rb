@@ -68,4 +68,58 @@ module Enumerable
     indexer
   end
 
-  
+  def my_map
+    return to_enum(:my_map) unless block_given?
+
+    new_array = []
+    my_each do |value|
+      new_array << if is_a? Hash
+                    yield(value[0], value[1])
+                  else
+                    yield(value)
+                  end
+    end
+    new_array
+  end
+
+  def my_inject(param_1 = nil, param_2 = nil, &block)
+    array = to_a.dup
+    (inject, var, array) = get_inject_and_sym(param_1, param_2, array, block_given?)
+    inject = if var
+               inject_var(array, var, inject)
+             else
+               inject_block(array, inject, &block)
+             end
+    inject
+  end
+
+  private
+  def check_pattern(index, param)
+    return index.is_a?(param) if param.is_a? Class
+    return param.match?(index) if param.is_a? Regexp
+    index == param
+  end
+
+  def get_inject_and_var(param_1, param_2, array, block)
+    param_1 = array.shift if param_1.nil? && block
+    return [param_1, nil, array] if block
+    return [array.shift, param_1, array] if param_2.nil?
+    [param_1, param_2, array]
+  end
+
+  def inject_var(array, var, inject)
+    array[0..-1].my_each { |i| inject = inject.send(var, i) }
+    inject
+  end
+
+  def inject_block(array, inject, &block)
+    raise LocalJumpError, 'no block given' unless block
+
+    array[0..-1].my_each { |i| inject = block.yield(inject, i) }
+    inject
+  end
+end
+
+def multiply_els(array)
+  array.my_inject { |mul, n| mul * n }
+end
