@@ -22,3 +22,23 @@ module Enumerable
     end
     self
   end
+  
+  def my_select
+    return to_enum(:my_select) unless block_given?
+    array = []
+    my_each { |i| array << i if yield(i) }
+    array
+  end
+
+  def my_all?(param = nil)
+    if block_given?
+      my_each { |i| return false unless yield(i) }
+    elsif param.nil?
+      my_each { |i| return false unless i }
+    else
+      my_each { |i| return false unless check_pattern(i, param) }
+    end
+    true
+  end
+
+  
