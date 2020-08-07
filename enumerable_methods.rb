@@ -85,7 +85,7 @@ module Enumerable
     all_params = param1 && param2
     first_param = param1 && !param2
     no_param = !param1
-    memo = (only_param && !block_given?) || (no_param && block_given?) ? array[0] : param1
+    memo = (first_param && !block_given?) || (no_param && block_given?) ? array[0] : param1
     if block_given?
       array.drop(1).my_each { |i| memo = yield memo, i } if no_param
       array.my_each { |i| memo = yield memo, i } if first_param
