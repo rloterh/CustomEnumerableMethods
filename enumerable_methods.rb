@@ -81,7 +81,7 @@ module Enumerable
 
   def my_inject(param1 = nil, param2 = nil, &block)
     array = to_a.dup
-    (inject, var, array) = get_inject_and_sym(param1, param2, array, block_given?)
+    (inject, var, array) = get_inject_and_var(param1, param2, array, block_given?)
     inject = if var inject_var(array, var, inject)
              else inject_block(array, inject, &block)
              end
