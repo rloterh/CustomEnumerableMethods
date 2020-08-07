@@ -52,4 +52,20 @@ module Enumerable
     false
   end
 
+  def my_none?(param = nil, &block)
+    !my_any?(param, &block)
+  end
+
+  def my_count(param = nil)
+    indexer = 0
+    if block_given?
+      my_each { |i| indexer += 1 if yield(i) == true }
+    elsif param.nil?
+      my_each { indexer += 1 }
+    else
+      my_each { |i| indexer += 1 if i == param }
+    end
+    indexer
+  end
+
   
