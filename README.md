@@ -1,6 +1,3 @@
-# EnumerableMethods
-Ruby - Creation of enumerable methods
-
 # Enumerable Methods
 
 For this project, we have produced our own versions of a number of common methods in Ruby's Enumerable module: 
