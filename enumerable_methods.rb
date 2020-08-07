@@ -71,48 +71,37 @@ module Enumerable
     indexer
   end
 
-  def my_map
-    return to_enum(:my_map) unless block_given?
-
+  def my_map (&_proc)
+    array = to_a
     new_array = []
-    my_each { |i| new_array << yield(i) }
+    array.my_each { |i| new_array.push(yield i) }
     new_array
   end
 
-  def my_inject(param1 = nil, param2 = nil, &block)
-    array = to_a.dup
-    (inject, var, array) = get_inject_and_var(param1, param2, array, block_given?)
-    inject = if var inject_var(array, var, inject)
-             else inject_block(array, inject, &block)
-             end
-    inject
-  end
+  def my_inject(*params)
+    array = to_a
+    param1 = params[0]
+    param2 = params[1]
+    all_params = param1 && param2
+    first_param = param1 && !param2
+    no_param = !param1
+
+    memo = (only_param && !block_given?) || (no_param && block_given?) ? array[0] : param1
+    if block_given?
+        array.drop(1).my_each { |i| memo = yield memo, i } if no_param
+        array.my_each { |i| memo = yield memo, i } if first_param
+      else
+        array.drop(1).my_each { |i| memo = memo.send(param1, i) } if first_param
+        array.my_each { |i| memo = memo.send(param2, i) } if all_params
+      end
+      memo
+    end
 
   def check_pattern(index, param)
     return index.is_a?(param) if param.is_a? Class
     return param.match?(index) if param.is_a? Regexp
 
     index == param
-  end
-
-  def get_inject_and_var(param1, param2, array, block)
-    param1 = array.shift if param1.nil? && block
-    return [param1, nil, array] if block
-    return [array.shift, param1, array] if param2.nil?
-
-    [param1, param2, array]
-  end
-
-  def inject_var(array, var, inject)
-    array[0..-1].my_each { |i| inject = inject.send(var, i) }
-    inject
-  end
-
-  def inject_block(array, inject, &block)
-    raise LocalJumpError, 'no block given' unless block
-
-    array[0..-1].my_each { |i| inject = block.yield(inject, i) }
-    inject
   end
 end
 
