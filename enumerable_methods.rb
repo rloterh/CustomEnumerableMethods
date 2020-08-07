@@ -71,7 +71,7 @@ module Enumerable
     indexer
   end
 
-  def my_map (&_proc)
+  def my_map(&_proc)
     array = to_a
     new_array = []
     array.my_each { |i| new_array.push(yield i) }
@@ -85,17 +85,16 @@ module Enumerable
     all_params = param1 && param2
     first_param = param1 && !param2
     no_param = !param1
-
     memo = (only_param && !block_given?) || (no_param && block_given?) ? array[0] : param1
     if block_given?
-        array.drop(1).my_each { |i| memo = yield memo, i } if no_param
-        array.my_each { |i| memo = yield memo, i } if first_param
-      else
-        array.drop(1).my_each { |i| memo = memo.send(param1, i) } if first_param
-        array.my_each { |i| memo = memo.send(param2, i) } if all_params
-      end
-      memo
+      array.drop(1).my_each { |i| memo = yield memo, i } if no_param
+      array.my_each { |i| memo = yield memo, i } if first_param
+    else
+      array.drop(1).my_each { |i| memo = memo.send(param1, i) } if first_param
+      array.my_each { |i| memo = memo.send(param2, i) } if all_params
     end
+    memo
+  end
 
   def check_pattern(index, param)
     return index.is_a?(param) if param.is_a? Class
