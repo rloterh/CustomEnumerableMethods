@@ -1,3 +1,30 @@
+def check_pattern(index, param)
+  return index.is_a?(param) if param.is_a? Class
+  return param.match?(index) if param.is_a? Regexp
+
+  index == param
+end
+
+def get_inject_and_var(param1, param2, array, block)
+  param1 = array.shift if param1.nil? && block
+  return [param1, nil, array] if block
+  return [array.shift, param1, array] if param2.nil?
+
+  [param1, param2, array]
+end
+
+def inject_var(array, var, inject)
+  array[0..-1].my_each { |i| inject = inject.send(var, i) }
+  inject
+end
+
+def inject_block(array, inject, &block)
+  raise LocalJumpError, 'no block given' unless block
+
+  array[0..-1].my_each { |i| inject = block.yield(inject, i) }
+  inject
+end
+
 module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
@@ -87,41 +114,9 @@ module Enumerable
   def my_inject(param_1 = nil, param_2 = nil, &block)
     array = to_a.dup
     (inject, var, array) = get_inject_and_sym(param_1, param_2, array, block_given?)
-    inject = if var
-               inject_var(array, var, inject)
-             else
-               inject_block(array, inject, &block)
+    inject = if var inject_var(array, var, inject)
+             else inject_block(array, inject, &block)
              end
-    inject
-  end
-
-  private
-
-  def check_pattern(index, param)
-    return index.is_a?(param) if param.is_a? Class
-
-    return param.match?(index) if param.is_a? Regexp
-
-    index == param
-  end
-
-  def get_inject_and_var(param1, param2, array, block)
-    param1 = array.shift if param1.nil? && block
-    return [param1, nil, array] if block
-    return [array.shift, param1, array] if param2.nil?
-
-    [param1, param2, array]
-  end
-
-  def inject_var(array, var, inject)
-    array[0..-1].my_each { |i| inject = inject.send(var, i) }
-    inject
-  end
-
-  def inject_block(array, inject, &block)
-    raise LocalJumpError, 'no block given' unless block
-
-    array[0..-1].my_each { |i| inject = block.yield(inject, i) }
     inject
   end
 end
