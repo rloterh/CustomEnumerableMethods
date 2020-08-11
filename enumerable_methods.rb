@@ -72,28 +72,20 @@ module Enumerable
   end
 
   def my_map(&_proc)
-    array = to_a
+    return to_enum(:my_map) unless block_given?
+
     new_array = []
     array.my_each { |i| new_array.push(yield i) }
     new_array
   end
 
-  def my_inject(*params)
-    array = to_a
-    param1 = params[0]
-    param2 = params[1]
-    all_params = param1 && param2
-    first_param = param1 && !param2
-    no_param = !param1
-    memo = (first_param && !block_given?) || (no_param && block_given?) ? array[0] : param1
-    if block_given?
-      array.drop(1).my_each { |i| memo = yield memo, i } if no_param
-      array.my_each { |i| memo = yield memo, i } if first_param
-    else
-      array.drop(1).my_each { |i| memo = memo.send(param1, i) } if first_param
-      array.my_each { |i| memo = memo.send(param2, i) } if all_params
-    end
-    memo
+  def my_inject(_param1 = nil, _param2 = nil, &block)
+    array = to_a.dup
+    (inject, var, array) = get_inject(param_1, param_2, array, block_given?)
+    inject = if var inject_var(array, var, inject)
+             else inject_block(array, inject, &block)
+             end
+    inject
   end
 
   def check_pattern(index, param)
@@ -101,6 +93,26 @@ module Enumerable
     return param.match?(index) if param.is_a? Regexp
 
     index == param
+  end
+
+  def get_inject(param1, param2, arr, block)
+    param1 = arr.shift if param1.nil? && block
+    return [param1, nil, arr] if block
+    return [arr.shift, param1, arr] if param2.nil?
+
+    [param1, param2, arr]
+  end
+
+  def inject_var(array, var, inject)
+    array[0..-1].my_each { |i| inject = inject.send(var, i) }
+    inject
+  end
+
+  def inject_block(array, inject, &block)
+    raise LocalJumpError, 'no block given' unless block
+
+    array[0..-1].my_each { |i| inject = block.yield(inject, i) }
+    inject
   end
 end
 
