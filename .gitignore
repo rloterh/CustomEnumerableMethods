@@ -1,3 +1,5 @@
 .stickler.yml
 Gemfile
 Gemfile.lock
+master_spec.rb
+**test.rb

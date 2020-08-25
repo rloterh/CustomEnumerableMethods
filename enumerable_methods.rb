@@ -82,13 +82,13 @@ module Enumerable
   def my_inject(param1 = nil, sym = nil)
     raise LocalJumpError if param1.nil? && !block_given?
 
-    array = self.to_a
+    array = to_a
     if block_given?
       acc = param1 || array[0]
       start = param1 ? 0 : 1
       (start..array.length - 1).each { |i| acc = yield(acc, array[i]) }
     else
-      acc = param1.is_a?(Symbol) ? array[0] : param1
+      acc = param1.is_a?(symbol) ? array[0] : param1
       start = param1.is_a?(symbol) ? 1 : 0
       symbol = sym || param1
 
