@@ -71,21 +71,30 @@ module Enumerable
     indexer
   end
 
-  def my_map(&_proc)
-    return to_enum(:my_map) unless block_given?
-
+  def my_map(proc = nil)
     new_array = []
-    array.my_each { |i| new_array.push(yield i) }
+    return enum_for unless proc || block_given?
+
+    my_map.each { |e| new_array << (proc ? proc.call(e) : yield(e)) }
     new_array
   end
 
-  def my_inject(_param1 = nil, _param2 = nil, &block)
-    array = to_a.dup
-    (inject, var, array) = get_inject(param_1, param_2, array, block_given?)
-    inject = if var inject_var(array, var, inject)
-             else inject_block(array, inject, &block)
-             end
-    inject
+  def my_inject(param1 = nil, sym = nil)
+    raise LocalJumpError if param1.nil? && !block_given?
+
+    array = to_a
+    if block_given?
+      acc = param1 || array[0]
+      start = param1 ? 0 : 1
+      (start..array.length - 1).each { |i| acc = yield(acc, array[i]) }
+    else
+      acc = param1.is_a?(symbol) ? array[0] : param1
+      start = param1.is_a?(symbol) ? 1 : 0
+      symbol = sym || param1
+
+      (start..array.length - 1).each { |i| acc = acc.send(symbol, array[i]) }
+    end
+    acc
   end
 
   def check_pattern(index, param)
@@ -94,28 +103,8 @@ module Enumerable
 
     index == param
   end
-
-  def get_inject(param1, param2, arr, block)
-    param1 = arr.shift if param1.nil? && block
-    return [param1, nil, arr] if block
-    return [arr.shift, param1, arr] if param2.nil?
-
-    [param1, param2, arr]
-  end
-
-  def inject_var(array, var, inject)
-    array[0..-1].my_each { |i| inject = inject.send(var, i) }
-    inject
-  end
-
-  def inject_block(array, inject, &block)
-    raise LocalJumpError, 'no block given' unless block
-
-    array[0..-1].my_each { |i| inject = block.yield(inject, i) }
-    inject
-  end
 end
 
 def multiply_els(array)
-  array.my_inject { |mul, n| mul * n }
+  array.my_inject { |acc, element| acc * element }
 end
