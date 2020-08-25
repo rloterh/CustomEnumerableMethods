@@ -88,8 +88,8 @@ module Enumerable
       start = param1 ? 0 : 1
       (start..arr.length - 1).each { |i| acc = yield(acc, arr[i]) }
     else
-      acc = param1.is_a?(symbol) ? arr[0] : param1
-      start = param1.is_a?(symbol) ? 1 : 0
+      acc = param1.is_a?(Symbol) ? arr[0] : param1
+      start = param1.is_a?(Symbol) ? 1 : 0
       symbol = sym || param1
 
       (start..arr.length - 1).each { |i| acc = acc.send(symbol, arr[i]) }
