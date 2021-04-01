@@ -1,7 +1,10 @@
-# Enumerable Methods
+# Custom Enumerable Methods (Microverse Ruby Module)
 
-For this project, we have produced our own versions of a number of common methods in Ruby's Enumerable module: 
+![Microverse](https://img.shields.io/badge/-Microverse-007bff?style=for-the-badge)
 
+
+## Description 
+Custom enumerable methods are created:
 - #my_each - a method which behaves like #each. This method was then used within the other methods we created.
 - #my_each_with_index - a method which behaves like #each_with_index
 - #my_select - a method which behaves like #select.
@@ -14,60 +17,57 @@ For this project, we have produced our own versions of a number of common method
 - #multiply_els - which uses #my_inject to multiply elements accumulatively.
 
 Every method has been tested on hashes, arrays and ranges to mirror the behaviour of the methods they were modelled from.
+The specification for this project is a part of [The Odin Project](https://www.theodinproject.com/)
 
-## Built With
-- Ruby
-- VSCode
-- Rubocop
 
 ## Live Demo
 
-To quickly see our project in action, visit the [live demo](https://repl.it/@rloterh/AcademicSardonicConnections#main.rb) on repl.it.
+[Live demo]([live demo](https://repl.it/@rloterh/AcademicSardonicConnections#main.rb/)
+
+## Built With
+- Ruby 2.7.1
 
 ## Getting Started
 
 ### Prerequisites
 
-To get this project up and running, you must already have **Ruby** installed on your computer.
+Ruby must already be installed on your computer
 
 ### Installation
 
-**To get this project set up on your local machine, follow these simple steps:**
+1. - Copy git link for this project here: [Clone link](https://github.com/rloterh/BubbleSort)
+2. - In the terminal run `git clone https://github.com/rloterh/BubbleSort`
+3. - Navigate to the cloned directory via the terminal and run `ruby main.rb`
+4. - Result is displayed in the terminal
 
-1. Open Terminal.
-
-2. Navigate to your desired location to download the contents of this repository.
-
-3. Copy and paste the following code into the Terminal:
-
-    git clone https://github.com/rloterh/CustomEnumerableMethods
-
-4. Hit enter.
-
-5. Once the repository has been cloned, you can now open the main.rb file and use some of the methods we have created! Enjoy!
 
 ## Author
 
-👤 **Robert Loterh**
+### 👨‍💻 Robert Loterh
 
-- Github: [@githubhandle](https://github.com/rloterh )
-- Twitter: [@twitterhandle](https://twitter.com/RLoterh )
-- Linkedin: [linkedin](https://www.linkedin.com/in/robert-loterh-30b265135/ )
+[![GitHub](https://img.shields.io/badge/-GitHub-000?style=for-the-badge&logo=GitHub&logoColor=white)](https://github.com/rloterh) <br>
+[![LINKEDIN](https://img.shields.io/badge/-LINKEDIN-0077B5?style=for-the-badge&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/robert-loterh/) <br>
+[![EMAIL](https://img.shields.io/badge/-EMAIL-D14836?style=for-the-badge&logo=Mail.Ru&logoColor=white)](mailto:rloterh@gmail.com) <br>
+[![TWITTER](https://img.shields.io/badge/-TWITTER-1DA1F2?style=for-the-badge&logo=Twitter&logoColor=white)](https://twitter.com/RLoterh) <br>
+
 
 
 ## 🤝 Contributing
 
-The best way you can contribute to this project is by submitting an [issue](https://github.com/rloterh/CustomEnumerableMethods/issues) to help us improve it!
+Contributions, issues and feature requests are welcome!
+
+Feel free to check the [issues page](https://github.com/rloterh/CustomEnumerableMethods/issues/new).
+
 
 ## Show your support
 
-If you've read this far, you must like the project! Give us a ⭐️!
+Give a ⭐️ if you like this project!
 
 ## Acknowledgments
+- [The Odin Project](https://www.theodinproject.com/)
+- [Microverse](https://www.microverse.org/)
 
-- Our thanks to Microverse and all our peers and colleagues there.
 
-## 📝 License
+### License
 
-This project is [MIT](lic.url) licensed.
-
+![Cocoapods](https://img.shields.io/cocoapods/l/AFNetworking?color=red&style=for-the-badge)
