@@ -22,7 +22,7 @@ The specification for this project is a part of [The Odin Project](https://www.t
 
 ## Live Demo
 
-[Live demo]([live demo](https://repl.it/@rloterh/AcademicSardonicConnections#main.rb/)
+[Live demo](https://repl.it/@rloterh/AcademicSardonicConnections#main.rb/)
 
 ## Built With
 - Ruby 2.7.1
